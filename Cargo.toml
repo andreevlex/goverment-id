@@ -1,0 +1,6 @@
+[package]
+name = "goverment_ids"
+version = "0.1.0"
+authors = ["Andreev Alexander <andreevlex.as@gmail.com>"]
+
+[dependencies]
