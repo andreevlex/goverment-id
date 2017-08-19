@@ -50,7 +50,7 @@ fn check_inn_len12(input: &str) -> bool {
         let num = get_digit(input, i);
         sum1 += num * ratio1[i];
     }
-    let calc_num1 = sum1 % 11;
+    let calc_num1 = sum1 % 11 % 10;
     
     let ratio2:[u32; 11] = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8];    
     let mut sum2 = 0;    
@@ -58,7 +58,7 @@ fn check_inn_len12(input: &str) -> bool {
         let num = get_digit(input, i);
         sum2 += num * ratio2[i];
     }
-    let calc_num2 = sum2 % 11;
+    let calc_num2 = sum2 % 11 % 10;
     
     let ctrl_num1 = get_digit(input, 10);
     let ctrl_num2 = get_digit(input, 11);
@@ -74,7 +74,7 @@ fn check_inn_len10(input: &str) -> bool {
         let num = get_digit(input, i);
         sum += num * ratio[i];
     }
-    let calc_num = sum % 11;
+    let calc_num = sum % 11 % 10;
     let ctrl_num = get_digit(input, 9);
 
     calc_num == ctrl_num
