@@ -1,11 +1,18 @@
 extern crate goverment_ids;
 
-fn checkinn(s: &str) {
-    if goverment_ids::inn::is_valid_inn(s) {
+fn print_result(res: bool) {
+    if res {
         println!("{}", "yes");
     }
     else {
         println!("{}", "no");
+    }
+}
+
+fn checkinn(s: &str) {
+    match goverment_ids::inn::is_valid_inn(s) {
+        Ok(res) => print_result(res),
+        Err(msg) => println!("Error: {}", msg),
     }
 }
 

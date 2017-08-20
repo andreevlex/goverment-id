@@ -1,17 +1,19 @@
 
-pub fn is_valid_inn(input: &str) -> bool {
+pub type ValidResult = Result<bool, String>;
+
+pub fn is_valid_inn(input: &str) -> ValidResult {
     if input.is_empty() {
-        return false;
+        return Err("ИНН пуст".to_string());
     }
 
     if !only_digits(input) {
-        return false;
+        return Err("ИНН должен состоять только из цифр".to_string());
     }
 
     match input.len() {
-        12 => check_inn_len12(input),
-        10 => check_inn_len10(input),
-        _ => false
+        12 => Ok(check_inn_len12(input)),
+        10 => Ok(check_inn_len10(input)),
+        _ => Err("ИНН должен быть длиной 10 или 12 цифр".to_string())
     }
 
 }
