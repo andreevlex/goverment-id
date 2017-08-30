@@ -16,10 +16,18 @@ fn checkinn(s: &str) {
     }
 }
 
+fn checkkpp(s: &str) {
+    match goverment_ids::kpp::is_valid_kpp(s) {
+        Ok(res) => print_result(res),
+        Err(msg) => println!("Error: {}", msg),
+    }
+}
+
 fn main() {
 	const HELP: &'static str = "Использование: govermentID команда [аргументы]...
     Команды:
         checkinn INN - проверить ИНН. Параметр INN - содержит ИНН
+        checkkpp KPP - проверить КПП. Параметр KPP - содержит КПП
         help  - показать это сообщение.";
     
 	let args: Vec<String> = std::env::args().collect();
@@ -31,6 +39,12 @@ fn main() {
                             panic!("Использование: govermentID checkinn INN");
                     }
                     checkinn(&args[2])
+                },
+                "checkkpp" => {
+                    if args.len() != 3 {
+                            panic!("Использование: govermentID checkkpp KPP");
+                    }
+                    checkkpp(&args[2])
                 },
                 "help" => {
                     println!("{}", HELP);
