@@ -26,8 +26,8 @@ fn checkkpp(s: &str) {
 fn main() {
 	const HELP: &'static str = "Использование: govermentID команда [аргументы]...
     Команды:
-        checkinn INN - проверить ИНН. Параметр INN - содержит ИНН
-        checkkpp KPP - проверить КПП. Параметр KPP - содержит КПП
+        checkinn INN - проверить ИНН. Параметр INN - содержит Идентификационный номер налогоплательщика (ИНН)
+        checkkpp KPP - проверить КПП. Параметр KPP - содержит Код причины постановки на учет (КПП)
         help  - показать это сообщение.";
     
 	let args: Vec<String> = std::env::args().collect();
