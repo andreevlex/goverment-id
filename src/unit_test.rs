@@ -54,3 +54,35 @@ fn test_invalid_check_digit_inn_12_numbers() {
 fn test_invalid_inn_with_litters() {
     assert!(inn::is_valid_inn("782f004526") == Err("ИНН должен состоять только из цифр".to_string()));
 }
+
+use kpp;
+
+#[test]
+fn test_invalid_kpp_7_numbers() {
+    assert!(kpp::is_valid_kpp("01234567") == Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string()));
+}
+
+#[test]
+fn test_valid_kpp_9_zeros() {
+    assert!(kpp::is_valid_kpp("000000000") == Ok(true));
+}
+
+#[test]
+fn test_invalid_kpp_10_numbers() {
+    assert!(kpp::is_valid_kpp("0123456789") == Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string()));
+}
+
+#[test]
+fn test_valid_kpp_with_upper_case_litters() {
+    assert!(kpp::is_valid_kpp("0000AZ000") == Ok(true));
+}
+
+#[test]
+fn test_invalid_kpp_with_lower_case_litters() {
+    assert!(kpp::is_valid_kpp("0000Az000") == Ok(false));
+}
+
+#[test]
+fn test_invalid_kpp_with_not_alfabet_chars() {
+    assert!(kpp::is_valid_kpp("0000A-000") == Ok(false));
+}
