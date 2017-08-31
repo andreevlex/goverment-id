@@ -1,5 +1,8 @@
 extern crate goverment_ids;
 
+use goverment_ids::{inn, kpp};
+use goverment_ids::common::Validate;
+
 fn print_result(res: bool) {
     if res {
         println!("{}", "yes");
@@ -17,7 +20,8 @@ fn checkinn(s: &str) {
 }
 
 fn checkkpp(s: &str) {
-    match goverment_ids::kpp::is_valid_kpp(s) {
+    let value = kpp::Kpp::new(s);
+    match value.is_valid() {
         Ok(res) => print_result(res),
         Err(msg) => println!("Error: {}", msg),
     }
