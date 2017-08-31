@@ -1,3 +1,5 @@
+use common::Validate;
+
 use inn;
 
 #[test]
@@ -55,34 +57,40 @@ fn test_invalid_inn_with_litters() {
     assert!(inn::is_valid_inn("782f004526") == Err("ИНН должен состоять только из цифр".to_string()));
 }
 
-use kpp;
+use kpp::Kpp;
 
 #[test]
 fn test_invalid_kpp_7_numbers() {
-    assert!(kpp::is_valid_kpp("01234567") == Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string()));
+    let value = Kpp::new("01234567");
+    assert!(value.is_valid() == Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string()));
 }
 
 #[test]
 fn test_valid_kpp_9_zeros() {
-    assert!(kpp::is_valid_kpp("000000000") == Ok(true));
+    let value = Kpp::new("000000000");
+    assert!(value.is_valid() == Ok(true));
 }
 
 #[test]
 fn test_invalid_kpp_10_numbers() {
-    assert!(kpp::is_valid_kpp("0123456789") == Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string()));
+    let value = Kpp::new("0123456789");
+    assert!(value.is_valid() == Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string()));
 }
 
 #[test]
 fn test_valid_kpp_with_upper_case_litters() {
-    assert!(kpp::is_valid_kpp("0000AZ000") == Ok(true));
+    let value = Kpp::new("0000AZ000");
+    assert!(value.is_valid() == Ok(true));
 }
 
 #[test]
 fn test_invalid_kpp_with_lower_case_litters() {
-    assert!(kpp::is_valid_kpp("0000Az000") == Ok(false));
+    let value = Kpp::new("0000Az000");
+    assert!(value.is_valid() == Ok(false));
 }
 
 #[test]
 fn test_invalid_kpp_with_not_alfabet_chars() {
-    assert!(kpp::is_valid_kpp("0000A-000") == Ok(false));
+    let value = Kpp::new("0000A-000");
+    assert!(value.is_valid() == Ok(false));
 }
