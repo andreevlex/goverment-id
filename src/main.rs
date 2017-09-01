@@ -13,7 +13,8 @@ fn print_result(res: bool) {
 }
 
 fn checkinn(s: &str) {
-    match goverment_ids::inn::is_valid_inn(s) {
+    let value = inn::Inn::new(s);
+    match value.is_valid() {
         Ok(res) => print_result(res),
         Err(msg) => println!("Error: {}", msg),
     }
