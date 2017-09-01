@@ -3,27 +3,24 @@ pub use common::{Validate, ValidResult};
 
 pub struct Inn {
     value: String,
+    ratio: [u32; 11],
 }
 
 impl Inn {
     pub fn new(input: &str) -> Inn {
-        Inn { value: input.to_string() }
+        Inn { value: input.to_string(),
+              ratio: [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8] }
     } 
 
-    fn check_inn_len12(&self, input: &str) -> bool {
-        let ratio1:[u32; 10] = [7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
-        let calc_num1 = self.check_digit(input, &ratio1);
-    
-        let ratio2:[u32; 11] = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8];    
-        let calc_num2 = self.check_digit(input, &ratio2);
+    fn check_inn_len12(&self, input: &str) -> bool {        
+        let calc_num1 = self.check_digit(input, &self.ratio[1..]);    
+        let calc_num2 = self.check_digit(input, &self.ratio[..]);
     
         calc_num1 == get_digit(input, 10) && calc_num2 == get_digit(input, 11)
     }
 
     fn check_inn_len10(&self, input: &str) -> bool {
-        let ratio:[u32; 9] = [2, 4, 10, 3, 5, 9, 4, 6, 8];
-    
-        let calc_num = self.check_digit(input, &ratio);
+        let calc_num = self.check_digit(input, &self.ratio[2..]);
     
         calc_num == get_digit(input, 9)
     }
