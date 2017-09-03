@@ -1,5 +1,5 @@
 
-pub use common::{Validate, ValidResult};
+pub use common::{Validate, ValidResult, only_digits};
 
 pub struct Inn {
     value: String,
@@ -34,19 +34,6 @@ impl Inn {
         }
         sum % 11 % 10
     }
-}
-
-fn only_digits(input: &str) -> bool {    
-    if input.is_empty() {
-        return false;
-    }
-
-    for ch in input.chars() {
-        if !ch.is_digit(10) {
-            return false;
-        }
-    }
-    true
 }
 
 fn get_digit(input: &str, n: usize) -> u32 {

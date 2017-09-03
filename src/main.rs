@@ -1,6 +1,6 @@
 extern crate goverment_ids;
 
-use goverment_ids::{inn, kpp};
+use goverment_ids::{inn, kpp, bik};
 use goverment_ids::common::Validate;
 
 fn print_result(res: bool) {
@@ -12,7 +12,7 @@ fn print_result(res: bool) {
     }
 }
 
-fn checkinn(s: &str) {
+fn check_inn(s: &str) {
     let value = inn::Inn::new(s);
     match value.is_valid() {
         Ok(res) => print_result(res),
@@ -20,8 +20,16 @@ fn checkinn(s: &str) {
     }
 }
 
-fn checkkpp(s: &str) {
+fn check_kpp(s: &str) {
     let value = kpp::Kpp::new(s);
+    match value.is_valid() {
+        Ok(res) => print_result(res),
+        Err(msg) => println!("Error: {}", msg),
+    }
+}
+
+fn check_bik(s: &str) {
+    let value = bik::Bik::new(s);
     match value.is_valid() {
         Ok(res) => print_result(res),
         Err(msg) => println!("Error: {}", msg),
@@ -33,6 +41,7 @@ fn main() {
     Команды:
         check inn INN - проверить ИНН. Параметр INN - содержит Идентификационный номер налогоплательщика (ИНН)
         check kpp KPP - проверить КПП. Параметр KPP - содержит Код причины постановки на учет (КПП)
+        check bik BIK - проверить КПП. Параметр BIK - содержит Банковский идентификационный код (БИК)
         help  - показать это сообщение.";
     
 	let args: Vec<String> = std::env::args().collect();
@@ -47,13 +56,19 @@ fn main() {
                                     if args.len() != 4 {
                                         panic!("Использование: govermentID check inn INN");
                                     }
-                                    checkinn(&args[3])
+                                    check_inn(&args[3])
                                 },
                                 "kpp" => {
                                     if args.len() != 4 {
                                         panic!("Использование: govermentID check kpp KPP");
                                     }
-                                    checkkpp(&args[3])
+                                    check_kpp(&args[3])
+                                },
+                                "bik" => {
+                                    if args.len() != 4 {
+                                        panic!("Использование: govermentID check bik BIK");
+                                    }
+                                    check_bik(&args[3])
                                 },
                                 param @ _  => panic!(
                                     format!("Неправильный параметр команды check: {}", param))    
