@@ -31,27 +31,38 @@ fn checkkpp(s: &str) {
 fn main() {
 	const HELP: &'static str = "Использование: govermentID команда [аргументы]...
     Команды:
-        checkinn INN - проверить ИНН. Параметр INN - содержит Идентификационный номер налогоплательщика (ИНН)
-        checkkpp KPP - проверить КПП. Параметр KPP - содержит Код причины постановки на учет (КПП)
+        check inn INN - проверить ИНН. Параметр INN - содержит Идентификационный номер налогоплательщика (ИНН)
+        check kpp KPP - проверить КПП. Параметр KPP - содержит Код причины постановки на учет (КПП)
         help  - показать это сообщение.";
     
 	let args: Vec<String> = std::env::args().collect();
     match args.get(1) {
         Some(text) => {
             match text.as_ref() {
-                "checkinn" => {
-                    if args.len() != 3 {
-                            panic!("Использование: govermentID checkinn INN");
+                "check" => {
+                    match args.get(2) {
+                        Some(flag) => {
+                            match flag.as_ref() {
+                                "inn" => {
+                                    if args.len() != 4 {
+                                        panic!("Использование: govermentID check inn INN");
+                                    }
+                                    checkinn(&args[3])
+                                },
+                                "kpp" => {
+                                    if args.len() != 4 {
+                                        panic!("Использование: govermentID check kpp KPP");
+                                    }
+                                    checkkpp(&args[3])
+                                },
+                                param @ _  => panic!(
+                                    format!("Неправильный параметр команды check: {}", param))    
+                            }
+                        },
+                        None => panic!("Отсуствует обязательный параметр")
                     }
-                    checkinn(&args[2])
                 },
-                "checkkpp" => {
-                    if args.len() != 3 {
-                            panic!("Использование: govermentID checkkpp KPP");
-                    }
-                    checkkpp(&args[2])
-                },
-                "help" => {
+               "help" => {
                     println!("{}", HELP);
                 },
                 command @ _  => panic!(
