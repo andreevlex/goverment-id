@@ -88,3 +88,30 @@ fn test_invalid_kpp_with_lower_case_litters() {
 fn test_invalid_kpp_with_not_alfabet_chars() {
     assert!(Kpp::new("0000A-000").is_valid() == Ok(false));
 }
+
+use bik::Bik;
+
+#[test]
+fn test_empty_bik() {
+    assert!(Bik::new("").is_valid() == Err("БИК пуст".to_string()));
+}
+
+#[test]
+fn test_invalid_bik_7_numbers() {
+    assert!(Bik::new("01234567").is_valid() == Err("БИК может состоять только из 9 знаков".to_string()));
+}
+
+#[test]
+fn test_valid_bik_9_zeros() {
+    assert!(Bik::new("000000000").is_valid() == Ok(true));
+}
+
+#[test]
+fn test_invalid_bik_10_numbers() {
+    assert!(Bik::new("0123456789").is_valid() == Err("БИК может состоять только из 9 знаков".to_string()));
+}
+
+#[test]
+fn test_invalid_bik_with_litters() {
+    assert!(Bik::new("0000AZ000").is_valid() == Err("БИК должен состоять только из цифр".to_string()));
+}
