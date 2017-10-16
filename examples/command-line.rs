@@ -1,7 +1,7 @@
-extern crate goverment_ids;
+extern crate goverment_id;
 
-use goverment_ids::{inn, kpp, bik};
-use goverment_ids::common::Validate;
+use goverment_id::{inn, kpp, bik};
+use goverment_id::common::Validate;
 
 fn print_result(res: bool) {
     if res {
@@ -35,6 +35,7 @@ fn check_bik(s: &str) {
         Err(msg) => println!("Error: {}", msg),
     }
 }
+
 
 fn main() {
 	const HELP: &'static str = "Использование: govermentID команда [аргументы]...
