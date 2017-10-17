@@ -66,6 +66,8 @@ pub trait BuildElement {
 
     /// Extract the value of `DateTime` type from the text.
     fn as_datetime(&self) -> Result<DateTime<Utc>, Error>;
+
+    fn get_attr(&self, name: &str) -> String;
 }
 
 impl BuildElement for Element {
@@ -217,6 +219,12 @@ impl BuildElement for Element {
     fn as_boolean(&self) -> Result<bool, Error> {
         let text = try!(get_typed_string(self, "boolean"));
         Ok(text == "true")
+    }
+
+    fn get_attr(&self, name: &str) -> String {
+        self.attributes.get(name)
+            .unwrap_or(&"".to_string())
+            .clone()
     }
 }
 
