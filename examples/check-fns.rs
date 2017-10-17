@@ -11,9 +11,13 @@ fn main() {
             "420501001".to_string(),
             Utc::now())
             );
-
+    partners.push(Partner::new(
+            "6648185610".to_string(),
+            "662301001".to_string(),
+            Utc::now())
+            );
     match check_fns(&partners) {
         Ok(rsp) => println!("{:?}", rsp),
-        Err(_) => panic!("Что-то пошло не по плану"),
+        Err(e) => println!("Error {:?}",e),
     }
 }
