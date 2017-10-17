@@ -1,5 +1,6 @@
-use chrono::{DateTime, Utc};
+use chrono::prelude::*;
 
+#[derive(Debug)]
 pub struct Partner {
     pub inn: String,
     pub kpp: String,
