@@ -1,10 +1,17 @@
 use xmltree::Element;
-use fns_service::{FromElement, NdsResponse, Partner, Result};
+use fns_service::{NdsResponse, Partner, Result};
 use fns_service::rpser::xml::BuildElement;
+
 use chrono::prelude::*;
 use chrono::ParseResult;
 
 use std::str::FromStr;
+
+pub trait FromElement {
+    fn from_element(element: Element) -> Result<Self>
+    where
+        Self: Sized;
+}
 
 fn get_datetime(value: &str) -> ParseResult<DateTime<Utc>> {
     Utc.datetime_from_str(&format!("{} 00:00:00", value), "%d.%m.%Y %H:%M:%S")

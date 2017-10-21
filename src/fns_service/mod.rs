@@ -2,10 +2,10 @@ use std::num::ParseIntError;
 
 pub mod rpser;
 pub mod http;
-pub mod transforms;
 
 mod partner;
 mod nds_response;
+mod transforms;
 
 use std::result;
 
@@ -16,19 +16,15 @@ use reqwest::Error as ReqError;
 
 use xmltree::Element;
 
-use chrono::{DateTime, ParseError, Utc};
+use chrono::{ParseError, Utc};
 
 pub use self::partner::Partner;
 pub use self::nds_response::NdsResponse;
 
+pub use self::transforms::FromElement;
+
 const V2_API_RPC_PATH: &'static str = "http://npchk.nalog.ru:80/FNSNDSCAWS_2";
 const V2_API_REQUEST: &'static str = "http://ws.unisoft/FNSNDSCAWS2/Request";
-
-pub trait FromElement {
-    fn from_element(element: Element) -> Result<Self>
-    where
-        Self: Sized;
-}
 
 pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
     let namespace = "req";
