@@ -1,3 +1,4 @@
+// get from https://github.com/Nercury/confluence-rs
 //! HTTP helpers.
 
 use std::io::Read;

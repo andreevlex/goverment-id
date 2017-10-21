@@ -1,4 +1,6 @@
-use std::num::ParseIntError;
+use std::num;
+use reqwest;
+use chrono;
 
 pub mod rpser;
 pub mod http;
@@ -8,15 +10,13 @@ mod nds_response;
 mod transforms;
 
 use std::result;
+use std::error;
+use std::fmt;
 
-use self::rpser::xml::{BuildElement, Error as XmlError};
-use self::rpser::{Method, RpcError};
-
-use reqwest::Error as ReqError;
+use self::rpser::xml::BuildElement;
+use self::rpser::Method;
 
 use xmltree::Element;
-
-use chrono::{ParseError, Utc};
 
 pub use self::partner::Partner;
 pub use self::nds_response::NdsResponse;
@@ -38,60 +38,70 @@ pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
         );
     }
 
-    let response = try!(call(nds_request2));
+    let response = call(nds_request2)?;
 
-    Ok(try!(NdsResponse::from_element(response.body)))
+    Ok(NdsResponse::from_element(response.body)?)
 }
 
 fn call(method: rpser::Method) -> Result<rpser::Response> {
     let envelope = method.as_xml(V2_API_REQUEST);
-    //println!("[envelope xml] {:?}", envelope);
+    
+    let http_response = http::soap_action(V2_API_RPC_PATH, &method.name, &envelope)?;
 
-    let http_response = try!(http::soap_action(V2_API_RPC_PATH, &method.name, &envelope));
-
-    //println!("[response xml] {}", http_response.body);
-
-    Ok(try!(rpser::Response::from_xml(&http_response.body)))
+    Ok(rpser::Response::from_xml(&http_response.body)?)
 }
 
 #[derive(Debug)]
 pub enum Error {
     TooManyRecords,
-    Req(ReqError),
-    Rpc(RpcError),
-    Xml(XmlError),
-    /// Can't parse received element.
-    ParseIntError(ParseIntError),
-    /// Can't parse received element.
-    ParseDateTimeError(ParseError),
+    ReqError(reqwest::Error),
+    RpcError(rpser::RpcError),
+    XmlError(rpser::xml::Error),
+    ParseIntError(num::ParseIntError),
+    ParseDateTimeError(chrono::ParseError),
 }
 
-impl From<ReqError> for Error {
-    fn from(other: ReqError) -> Error {
-        Error::Req(other)
+/*impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            Error::TooManyRecords => write!(f, "В запросе не может быть больше 10000 элементов"),
+            Error::ReqError(ref e) => fmt::Display::fmt(e, f),
+            Error::RpcError(ref e) => fmt::Display::fmt(e, f),
+
+        }
     }
 }
 
-impl From<RpcError> for Error {
-    fn from(other: RpcError) -> Error {
-        Error::Rpc(other)
+impl error::Error for Error {
+
+}*/
+
+impl From<reqwest::Error> for Error {
+    fn from(other: reqwest::Error) -> Error {
+        Error::ReqError(other)
     }
 }
 
-impl From<XmlError> for Error {
-    fn from(other: XmlError) -> Error {
-        Error::Xml(other)
+impl From<rpser::RpcError> for Error {
+    fn from(other: rpser::RpcError) -> Error {
+        Error::RpcError(other)
     }
 }
 
-impl From<ParseIntError> for Error {
-    fn from(other: ParseIntError) -> Error {
+impl From<rpser::xml::Error> for Error {
+    fn from(other: rpser::xml::Error) -> Error {
+        Error::XmlError(other)
+    }
+}
+
+impl From<num::ParseIntError> for Error {
+    fn from(other: num::ParseIntError) -> Error {
         Error::ParseIntError(other)
     }
 }
 
-impl From<ParseError> for Error {
-    fn from(other: ParseError) -> Error {
+impl From<chrono::ParseError> for Error {
+    fn from(other: chrono::ParseError) -> Error {
         Error::ParseDateTimeError(other)
     }
 }

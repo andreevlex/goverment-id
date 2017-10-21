@@ -1,3 +1,4 @@
+// get from https://github.com/Nercury/confluence-rs
 //! Helper trait to deal with XML Element tree.
 
 use xmltree::Element;
@@ -274,7 +275,7 @@ impl BuildElement for Element {
     }
 
     fn get_attr(&self, name: &str) -> String {
-        self.attributes.get(name).unwrap_or(&"".to_string()).clone()
+        self.attributes.get(name).unwrap_or(&"".into()).clone()
     }
 }
 
