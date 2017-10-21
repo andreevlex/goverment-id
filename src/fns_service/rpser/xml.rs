@@ -3,8 +3,11 @@
 
 use xmltree::Element;
 use std::collections::HashMap;
-use std::num::ParseIntError;
+use std::num;
 use chrono::{DateTime, ParseError, Utc};
+
+use std::fmt;
+use std::error;
 
 #[derive(Debug, PartialEq)]
 pub enum Error {
@@ -19,9 +22,93 @@ pub enum Error {
         given: Option<String>,
     },
     /// Can't parse received element.
-    ParseIntError { name: String, inner: ParseIntError },
+    ParseIntError { name: String, inner: num::ParseIntError },
     /// Can't parse received element.
     ParseDateTimeError { name: String, inner: ParseError },
+}
+
+impl fmt::Display for Error {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        match *self {
+            Error::NotFoundAtPath {
+                ref path
+                } => write!(f, "Path not found: {:?}", path),
+            Error::ExpectedNotEmpty {
+                ref parent
+                } => write!(f,"Expected element to contain children: {}", parent),
+            Error::ExpectedElementWithType {
+                ref name,
+                ref expected_type,
+                ref given,
+            } => write!(f,"Expected to find element with specified type:
+             \nname: {}\nexpected type: {}\ngiven type: {:?}", name, expected_type, given),
+            Error::ParseIntError {
+                ref name,
+                inner: ref e,
+            } => {
+                write!(f,"To element: {}", name)?;
+                fmt::Display::fmt(e, f)
+            },
+            Error::ParseDateTimeError {
+                ref name,
+                inner: ref e,
+            } => {
+                write!(f,"To element: {}", name)?;
+                fmt::Display::fmt(e, f)
+            },
+        }
+    }
+}
+
+impl error::Error for Error {
+    fn description(&self) -> &str {
+        match *self {
+            Error::NotFoundAtPath {
+                path: _
+                } => "Path not found",
+            Error::ExpectedNotEmpty {
+                parent: _
+            } => "Expected element to contain children",
+            Error::ExpectedElementWithType {
+                name: _,
+                expected_type: _,
+                given: _,
+                } => "Expected to find element with specified type",
+            Error::ParseIntError{
+                name: _,
+                inner: ref e,
+            } => e.description(),
+            Error::ParseDateTimeError {
+                name: _,
+                inner: ref e,
+            } => e.description(),
+        }
+    }
+
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {
+            Error::NotFoundAtPath {
+                path: _
+                } => None,
+            Error::ExpectedNotEmpty {
+                parent: _
+            } => None,
+            Error::ExpectedElementWithType {
+                name: _,
+                expected_type: _,
+                given: _,
+                } => None,
+            Error::ParseIntError{
+                name: _,
+                inner: ref e,
+            } => e.cause(),
+            Error::ParseDateTimeError {
+                name: _,
+                inner: ref e,
+            } => e.cause(),
+
+        }
+    }
 }
 
 /// Helper trait for building `xmltree::Element`.

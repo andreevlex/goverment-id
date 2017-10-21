@@ -61,20 +61,42 @@ pub enum Error {
     ParseDateTimeError(chrono::ParseError),
 }
 
-/*impl fmt::Display for Error {
+impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
             Error::TooManyRecords => write!(f, "В запросе не может быть больше 10000 элементов"),
             Error::ReqError(ref e) => fmt::Display::fmt(e, f),
             Error::RpcError(ref e) => fmt::Display::fmt(e, f),
-
+            Error::XmlError(ref e) => fmt::Display::fmt(e, f),
+            Error::ParseIntError(ref e) => fmt::Display::fmt(e, f),
+            Error::ParseDateTimeError(ref e) => fmt::Display::fmt(e, f),
         }
     }
 }
 
 impl error::Error for Error {
+fn description(&self) -> &str {
+        match *self {
+            Error::TooManyRecords => "В запросе не может быть больше 10000 элементов",
+            Error::ReqError(ref e) => e.description(),
+            Error::RpcError(ref e) => e.description(),
+            Error::XmlError(ref e) => e.description(),
+            Error::ParseIntError(ref e) => e.description(),
+            Error::ParseDateTimeError(ref e) => e.description(),
+        }
+    }
 
-}*/
+    fn cause(&self) -> Option<&error::Error> {
+        match *self {
+            Error::TooManyRecords => None,
+            Error::ReqError(ref e) => e.cause(),
+            Error::RpcError(ref e) => e.cause(),
+            Error::XmlError(ref e) => e.cause(),
+            Error::ParseIntError(ref e) => e.cause(),
+            Error::ParseDateTimeError(ref e) => e.cause(),
+        }
+    }
+}
 
 impl From<reqwest::Error> for Error {
     fn from(other: reqwest::Error) -> Error {
