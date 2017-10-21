@@ -1,5 +1,5 @@
 use regex::Regex;
-pub use common::{Validate, ValidResult};
+pub use common::{ValidResult, Validate};
 
 pub struct Kpp {
     value: String,
@@ -15,13 +15,18 @@ impl Validate for Kpp {
 
         match self.value.len() {
             9 => Ok(re.is_match(&self.value)),
-            _ => Err("КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)".to_string())
+            _ => Err(
+                "КПП может состоять только из 9 знаков (цифр или заглавных букв латинского алфавита от A до Z)"
+                    .to_string(),
+            ),
         }
     }
 }
 
 impl Kpp {
     pub fn new(input: &str) -> Kpp {
-        Kpp { value: input.to_string() }
-    } 
+        Kpp {
+            value: input.to_string(),
+        }
+    }
 }

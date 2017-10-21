@@ -3,9 +3,9 @@
 use std::io::Read;
 use std::result;
 
-use reqwest::{Client, StatusCode, Error};
+use reqwest::{Client, Error, StatusCode};
 
-use hyper::header::{ContentType};
+use hyper::header::ContentType;
 use hyper::mime;
 
 header! { (SoapAction, "SOAPAction") => [String] }
@@ -34,11 +34,12 @@ pub fn get(url: &str) -> Result<Response> {
 /// Perform a SOAP action to specified URL.
 pub fn soap_action(url: &str, action: &str, xml: &str) -> Result<Response> {
     let client = Client::new()?;
-    let mut response = client.post(url)?
-            .header(ContentType(mime::TEXT_XML))
-            .header(SoapAction(action.into()))
-            .body(xml.to_string())
-            .send()?;
+    let mut response = client
+        .post(url)?
+        .header(ContentType(mime::TEXT_XML))
+        .header(SoapAction(action.into()))
+        .body(xml.to_string())
+        .send()?;
 
     let mut body = String::new();
     response.read_to_string(&mut body).unwrap();

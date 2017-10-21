@@ -9,7 +9,7 @@ pub struct Partner {
 }
 
 impl Partner {
-    pub fn new( inn: String, kpp: String, dt: DateTime<Utc>) -> Partner {
+    pub fn new(inn: String, kpp: String, dt: DateTime<Utc>) -> Partner {
         Partner {
             inn: inn,
             kpp: kpp,

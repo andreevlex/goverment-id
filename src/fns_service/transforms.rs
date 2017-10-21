@@ -1,5 +1,5 @@
 use xmltree::Element;
-use fns_service::{FromElement, Result, Partner, NdsResponse};
+use fns_service::{FromElement, NdsResponse, Partner, Result};
 use fns_service::rpser::xml::BuildElement;
 use chrono::prelude::*;
 use chrono::ParseResult;
@@ -16,8 +16,8 @@ impl FromElement for NdsResponse {
             dtact_fl: try!(get_datetime(&element.get_attr("DTActFL"))),
             dtact_ul: try!(get_datetime(&element.get_attr("DTActUL"))),
             partners: vec![],
-            };
-        
+        };
+
         for elm in element.children {
             rsp.partners.push(try!(Partner::from_element(elm)));
         }
@@ -33,7 +33,6 @@ impl FromElement for Partner {
             kpp: element.get_attr("KPP"),
             dt: try!(get_datetime(&element.get_attr("DT"))),
             state: try!(i32::from_str(&element.get_attr("State"))),
-        }        
-        )
+        })
     }
 }

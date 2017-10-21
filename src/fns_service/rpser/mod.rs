@@ -41,11 +41,10 @@ impl Method {
             .with_attr(format!("xmlns:{}", namespace), api_url)
             .with_children(vec![
                 Element::node("soapenv:Header"),
-                Element::node("soapenv:Body")
-                    .with_child(
-                        Element::node(format!("{}:{}", namespace, self.name))
-                            .with_children_from_iter(self.args.iter())
-                    )
+                Element::node("soapenv:Body").with_child(
+                    Element::node(format!("{}:{}", namespace, self.name))
+                        .with_children_from_iter(self.args.iter()),
+                ),
             ]);
 
         envelope.to_string()
@@ -72,8 +71,12 @@ impl Response {
 
         if element.name == "Fault" {
             return Err(RpcError::Fault {
-                fault_code: try!(element.get_at_path(&["faultcode"])).text.unwrap_or(String::new()),
-                fault_string: try!(element.get_at_path(&["faultstring"])).text.unwrap_or(String::new()),
+                fault_code: try!(element.get_at_path(&["faultcode"]))
+                    .text
+                    .unwrap_or(String::new()),
+                fault_string: try!(element.get_at_path(&["faultstring"]))
+                    .text
+                    .unwrap_or(String::new()),
                 fault_detail: try!(element.get_at_path(&["detail"])),
             });
         }
@@ -113,6 +116,4 @@ pub type Result<T> = result::Result<T, RpcError>;
 
 
 #[cfg(test)]
-mod test {
-    
-}
+mod test {}
