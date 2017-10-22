@@ -22,7 +22,10 @@ pub enum Error {
         given: Option<String>,
     },
     /// Can't parse received element.
-    ParseIntError { name: String, inner: num::ParseIntError },
+    ParseIntError {
+        name: String,
+        inner: num::ParseIntError,
+    },
     /// Can't parse received element.
     ParseDateTimeError { name: String, inner: ParseError },
 }
@@ -30,32 +33,36 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Error::NotFoundAtPath {
-                ref path
-                } => write!(f, "Path not found: {:?}", path),
-            Error::ExpectedNotEmpty {
-                ref parent
-                } => write!(f,"Expected element to contain children: {}", parent),
+            Error::NotFoundAtPath { ref path } => write!(f, "Path not found: {:?}", path),
+            Error::ExpectedNotEmpty { ref parent } => {
+                write!(f, "Expected element to contain children: {}", parent)
+            }
             Error::ExpectedElementWithType {
                 ref name,
                 ref expected_type,
                 ref given,
-            } => write!(f,"Expected to find element with specified type:
-             \nname: {}\nexpected type: {}\ngiven type: {:?}", name, expected_type, given),
+            } => write!(
+                f,
+                "Expected to find element with specified type:
+             \nname: {}\nexpected type: {}\ngiven type: {:?}",
+                name,
+                expected_type,
+                given
+            ),
             Error::ParseIntError {
                 ref name,
                 inner: ref e,
             } => {
-                write!(f,"To element: {}", name)?;
+                write!(f, "To element: {}", name)?;
                 fmt::Display::fmt(e, f)
-            },
+            }
             Error::ParseDateTimeError {
                 ref name,
                 inner: ref e,
             } => {
-                write!(f,"To element: {}", name)?;
+                write!(f, "To element: {}", name)?;
                 fmt::Display::fmt(e, f)
-            },
+            }
         }
     }
 }
@@ -63,18 +70,14 @@ impl fmt::Display for Error {
 impl error::Error for Error {
     fn description(&self) -> &str {
         match *self {
-            Error::NotFoundAtPath {
-                path: _
-                } => "Path not found",
-            Error::ExpectedNotEmpty {
-                parent: _
-            } => "Expected element to contain children",
+            Error::NotFoundAtPath { path: _ } => "Path not found",
+            Error::ExpectedNotEmpty { parent: _ } => "Expected element to contain children",
             Error::ExpectedElementWithType {
                 name: _,
                 expected_type: _,
                 given: _,
-                } => "Expected to find element with specified type",
-            Error::ParseIntError{
+            } => "Expected to find element with specified type",
+            Error::ParseIntError {
                 name: _,
                 inner: ref e,
             } => e.description(),
@@ -87,18 +90,14 @@ impl error::Error for Error {
 
     fn cause(&self) -> Option<&error::Error> {
         match *self {
-            Error::NotFoundAtPath {
-                path: _
-                } => None,
-            Error::ExpectedNotEmpty {
-                parent: _
-            } => None,
+            Error::NotFoundAtPath { path: _ } => None,
+            Error::ExpectedNotEmpty { parent: _ } => None,
             Error::ExpectedElementWithType {
                 name: _,
                 expected_type: _,
                 given: _,
-                } => None,
-            Error::ParseIntError{
+            } => None,
+            Error::ParseIntError {
                 name: _,
                 inner: ref e,
             } => e.cause(),
@@ -106,7 +105,6 @@ impl error::Error for Error {
                 name: _,
                 inner: ref e,
             } => e.cause(),
-
         }
     }
 }

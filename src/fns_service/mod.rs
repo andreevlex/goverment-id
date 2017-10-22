@@ -28,6 +28,11 @@ const V2_API_REQUEST: &'static str = "http://ws.unisoft/FNSNDSCAWS2/Request";
 
 pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
     let namespace = "req";
+
+    if partners.len() > 10_000 {
+        return Err(Error::TooManyRecords)
+    }
+
     let mut nds_request2 = Method::new("NdsRequest2");
     for elem in partners.iter() {
         nds_request2 = nds_request2.with(
@@ -45,7 +50,7 @@ pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
 
 fn call(method: rpser::Method) -> Result<rpser::Response> {
     let envelope = method.as_xml(V2_API_REQUEST);
-    
+
     let http_response = http::soap_action(V2_API_RPC_PATH, &method.name, &envelope)?;
 
     Ok(rpser::Response::from_xml(&http_response.body)?)
@@ -64,7 +69,10 @@ pub enum Error {
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match *self {
-            Error::TooManyRecords => write!(f, "В запросе не может быть больше 10000 элементов"),
+            Error::TooManyRecords => write!(
+                f,
+                "В запросе не может быть больше 10000 элементов"
+            ),
             Error::ReqError(ref e) => fmt::Display::fmt(e, f),
             Error::RpcError(ref e) => fmt::Display::fmt(e, f),
             Error::XmlError(ref e) => fmt::Display::fmt(e, f),
@@ -75,9 +83,11 @@ impl fmt::Display for Error {
 }
 
 impl error::Error for Error {
-fn description(&self) -> &str {
+    fn description(&self) -> &str {
         match *self {
-            Error::TooManyRecords => "В запросе не может быть больше 10000 элементов",
+            Error::TooManyRecords => {
+                "В запросе не может быть больше 10000 элементов"
+            }
             Error::ReqError(ref e) => e.description(),
             Error::RpcError(ref e) => e.description(),
             Error::XmlError(ref e) => e.description(),

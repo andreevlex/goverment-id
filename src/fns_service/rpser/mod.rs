@@ -114,22 +114,18 @@ impl fmt::Display for RpcError {
                 ref fault_code,
                 ref fault_string,
                 ref fault_detail,
-                } => write!(f, "Fault: {}\n{}\n{:?}", fault_code, fault_string, fault_detail),
-            RpcError::XmlError {
-                error: ref e
-                } => fmt::Display::fmt(e, f),
-            RpcError::ExpectedElementText {
-                ref tag,
-            } => write!(f, "Expected element text {}", tag),
-            RpcError::UnexpectedElement {
-                ref tag,
-            } => write!(f, "Unexpected element {}", tag),
-            RpcError::ElementWasEmpty {
-                ref name,
-            } => write!(f, "Element was empty {}", name),
-            RpcError::ElementNotFound {
-                ref path,
-            } => write!(f, "Element not found\n {:?}", path),
+            } => write!(
+                f,
+                "Fault: {}\n{}\n{:?}",
+                fault_code,
+                fault_string,
+                fault_detail
+            ),
+            RpcError::XmlError { error: ref e } => fmt::Display::fmt(e, f),
+            RpcError::ExpectedElementText { ref tag } => write!(f, "Expected element text {}", tag),
+            RpcError::UnexpectedElement { ref tag } => write!(f, "Unexpected element {}", tag),
+            RpcError::ElementWasEmpty { ref name } => write!(f, "Element was empty {}", name),
+            RpcError::ElementNotFound { ref path } => write!(f, "Element not found\n {:?}", path),
         }
     }
 }
@@ -141,22 +137,12 @@ impl error::Error for RpcError {
                 fault_code: _,
                 fault_string: _,
                 fault_detail: _,
-                } => "Fault remote procedure call",
-            RpcError::XmlError {
-                error: ref e
-                } => e.description(),
-            RpcError::ExpectedElementText {
-                tag: _,
-            } => "Expected element text",
-            RpcError::UnexpectedElement {
-                tag: _,
-            } => "Unexpected element {}",
-            RpcError::ElementWasEmpty {
-                name: _,
-            } => "Element was empty",
-            RpcError::ElementNotFound {
-                path: _,
-            } => "Element not found",
+            } => "Fault remote procedure call",
+            RpcError::XmlError { error: ref e } => e.description(),
+            RpcError::ExpectedElementText { tag: _ } => "Expected element text",
+            RpcError::UnexpectedElement { tag: _ } => "Unexpected element {}",
+            RpcError::ElementWasEmpty { name: _ } => "Element was empty",
+            RpcError::ElementNotFound { path: _ } => "Element not found",
         }
     }
 
@@ -166,22 +152,12 @@ impl error::Error for RpcError {
                 fault_code: _,
                 fault_string: _,
                 fault_detail: _,
-                } => None,
-            RpcError::XmlError {
-                error: ref e
-                } => e.cause(),
-            RpcError::ExpectedElementText {
-                tag: _,
             } => None,
-            RpcError::UnexpectedElement {
-                tag: _,
-            } => None,
-            RpcError::ElementWasEmpty {
-                name: _,
-            } => None,
-            RpcError::ElementNotFound {
-                path: _,
-            } => None,
+            RpcError::XmlError { error: ref e } => e.cause(),
+            RpcError::ExpectedElementText { tag: _ } => None,
+            RpcError::UnexpectedElement { tag: _ } => None,
+            RpcError::ElementWasEmpty { name: _ } => None,
+            RpcError::ElementNotFound { path: _ } => None,
         }
     }
 }
