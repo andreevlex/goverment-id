@@ -1,6 +1,6 @@
 use xmltree::Element;
-use fns_service::{NdsResponse, Partner, Result};
-use fns_service::rpser::xml::BuildElement;
+use super::{NdsResponse, Partner, Result};
+use super::rpser::xml::BuildElement;
 
 use chrono::prelude::*;
 use chrono::ParseResult;
@@ -20,13 +20,13 @@ fn get_datetime(value: &str) -> ParseResult<DateTime<Utc>> {
 impl FromElement for NdsResponse {
     fn from_element(element: Element) -> Result<NdsResponse> {
         let mut rsp: NdsResponse = NdsResponse {
-            dtact_fl: try!(get_datetime(&element.get_attr("DTActFL"))),
-            dtact_ul: try!(get_datetime(&element.get_attr("DTActUL"))),
+            dtact_fl: get_datetime(&element.get_attr("DTActFL"))?,
+            dtact_ul: get_datetime(&element.get_attr("DTActUL"))?,
             partners: vec![],
         };
 
         for elm in element.children {
-            rsp.partners.push(try!(Partner::from_element(elm)));
+            rsp.partners.push(Partner::from_element(elm)?);
         }
 
         Ok(rsp)
@@ -38,8 +38,8 @@ impl FromElement for Partner {
         Ok(Partner {
             inn: element.get_attr("INN"),
             kpp: element.get_attr("KPP"),
-            dt: try!(get_datetime(&element.get_attr("DT"))),
-            state: try!(i32::from_str(&element.get_attr("State"))),
+            dt: get_datetime(&element.get_attr("DT"))?,
+            state: i32::from_str(&element.get_attr("State"))?,
         })
     }
 }
