@@ -1,4 +1,5 @@
 use std::num;
+use std::io;
 use reqwest;
 use chrono;
 
@@ -64,6 +65,7 @@ pub enum Error {
     XmlError(rpser::xml::Error),
     ParseIntError(num::ParseIntError),
     ParseDateTimeError(chrono::ParseError),
+    IoError(io::Error),
 }
 
 impl fmt::Display for Error {
@@ -78,6 +80,7 @@ impl fmt::Display for Error {
             Error::XmlError(ref e) => fmt::Display::fmt(e, f),
             Error::ParseIntError(ref e) => fmt::Display::fmt(e, f),
             Error::ParseDateTimeError(ref e) => fmt::Display::fmt(e, f),
+            Error::IoError(ref e) => fmt::Display::fmt(e, f),
         }
     }
 }
@@ -93,6 +96,7 @@ impl error::Error for Error {
             Error::XmlError(ref e) => e.description(),
             Error::ParseIntError(ref e) => e.description(),
             Error::ParseDateTimeError(ref e) => e.description(),
+            Error::IoError(ref e) => e.description(),
         }
     }
 
@@ -104,6 +108,7 @@ impl error::Error for Error {
             Error::XmlError(ref e) => e.cause(),
             Error::ParseIntError(ref e) => e.cause(),
             Error::ParseDateTimeError(ref e) => e.cause(),
+            Error::IoError(ref e) => e.cause(),
         }
     }
 }
@@ -135,6 +140,12 @@ impl From<num::ParseIntError> for Error {
 impl From<chrono::ParseError> for Error {
     fn from(other: chrono::ParseError) -> Error {
         Error::ParseDateTimeError(other)
+    }
+}
+
+impl From<io::Error> for Error {
+    fn from(other: io::Error) -> Error {
+        Error::IoError(other)
     }
 }
 

@@ -7,6 +7,7 @@ use std::error;
 use std::fmt;
 
 use self::xml::BuildElement;
+use xmltree;
 use xmltree::Element;
 
 /// XML method representation.
@@ -62,7 +63,7 @@ impl Response {
     /// Parse response from XML.
     pub fn from_xml(xml: &str) -> Result<Response> {
         let mut bytes = xml.as_bytes();
-        let mut element = Element::parse(&mut bytes).unwrap();
+        let mut element = Element::parse(&mut bytes)?;
 
         if element.name != "Envelope" {
             return Err(RpcError::UnexpectedElement { tag: element.name });
@@ -93,7 +94,7 @@ impl fmt::Display for Method {
 }
 
 /// Method parsing / response error.
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub enum RpcError {
     Fault {
         fault_code: String,
@@ -101,6 +102,7 @@ pub enum RpcError {
         fault_detail: Element,
     },
     XmlError { error: self::xml::Error },
+    XmlTreeError { error: xmltree::ParseError },
     ExpectedElementText { tag: String },
     UnexpectedElement { tag: String },
     ElementWasEmpty { name: String },
@@ -123,6 +125,7 @@ impl fmt::Display for RpcError {
             ),
             RpcError::XmlError { error: ref e } => fmt::Display::fmt(e, f),
             RpcError::ExpectedElementText { ref tag } => write!(f, "Expected element text {}", tag),
+            RpcError::XmlTreeError { error: ref e } => fmt::Display::fmt(e, f),
             RpcError::UnexpectedElement { ref tag } => write!(f, "Unexpected element {}", tag),
             RpcError::ElementWasEmpty { ref name } => write!(f, "Element was empty {}", name),
             RpcError::ElementNotFound { ref path } => write!(f, "Element not found\n {:?}", path),
@@ -139,6 +142,7 @@ impl error::Error for RpcError {
                 fault_detail: _,
             } => "Fault remote procedure call",
             RpcError::XmlError { error: ref e } => e.description(),
+            RpcError::XmlTreeError { error: ref e } => e.description(),
             RpcError::ExpectedElementText { tag: _ } => "Expected element text",
             RpcError::UnexpectedElement { tag: _ } => "Unexpected element {}",
             RpcError::ElementWasEmpty { name: _ } => "Element was empty",
@@ -154,6 +158,7 @@ impl error::Error for RpcError {
                 fault_detail: _,
             } => None,
             RpcError::XmlError { error: ref e } => e.cause(),
+            RpcError::XmlTreeError { error: ref e } => e.cause(),
             RpcError::ExpectedElementText { tag: _ } => None,
             RpcError::UnexpectedElement { tag: _ } => None,
             RpcError::ElementWasEmpty { name: _ } => None,
@@ -165,6 +170,12 @@ impl error::Error for RpcError {
 impl From<self::xml::Error> for RpcError {
     fn from(other: self::xml::Error) -> RpcError {
         RpcError::XmlError { error: other }
+    }
+}
+
+impl From<xmltree::ParseError> for RpcError {
+    fn from(other: xmltree::ParseError) -> RpcError {
+        RpcError::XmlTreeError{ error: other }
     }
 }
 

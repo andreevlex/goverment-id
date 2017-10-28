@@ -9,7 +9,7 @@ use chrono::{DateTime, ParseError, Utc};
 use std::fmt;
 use std::error;
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug)]
 pub enum Error {
     /// Element was expected at path, but was not found.
     NotFoundAtPath { path: Vec<String> },
