@@ -16,7 +16,7 @@ fn main() {
         "662301001".to_string(),
         Utc::now(),
     ));
-    
+
     match check_fns(&partners) {
         Ok(rsp) => println!("{:?}", rsp),
         Err(e) => println!("Error {:?}", e),

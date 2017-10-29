@@ -31,7 +31,7 @@ pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
     let namespace = "req";
 
     if partners.len() > 10_000 {
-        return Err(Error::TooManyRecords)
+        return Err(Error::TooManyRecords);
     }
 
     let mut nds_request2 = Method::new("NdsRequest2");

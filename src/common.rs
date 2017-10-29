@@ -1,7 +1,5 @@
-pub type ValidResult = Result<bool, String>;
-
 pub trait Validate {
-    fn is_valid(&self) -> ValidResult;
+    fn is_valid(&self) -> super::ValidResult;
 }
 
 pub fn only_digits(input: &str) -> bool {

@@ -12,6 +12,9 @@ pub mod inn;
 pub mod kpp;
 pub mod bik;
 pub mod common;
+pub mod error;
 pub mod fns_service;
 #[cfg(test)]
 mod unit_test;
+
+pub type ValidResult = std::result::Result<bool, error::Error>;

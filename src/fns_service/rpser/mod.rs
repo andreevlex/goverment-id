@@ -73,10 +73,12 @@ impl Response {
 
         if element.name == "Fault" {
             return Err(RpcError::Fault {
-                fault_code: element.get_at_path(&["faultcode"])?
+                fault_code: element
+                    .get_at_path(&["faultcode"])?
                     .text
                     .unwrap_or(String::new()),
-                fault_string: element.get_at_path(&["faultstring"])?
+                fault_string: element
+                    .get_at_path(&["faultstring"])?
                     .text
                     .unwrap_or(String::new()),
                 fault_detail: element.get_at_path(&["detail"])?,
@@ -175,7 +177,7 @@ impl From<self::xml::Error> for RpcError {
 
 impl From<xmltree::ParseError> for RpcError {
     fn from(other: xmltree::ParseError) -> RpcError {
-        RpcError::XmlTreeError{ error: other }
+        RpcError::XmlTreeError { error: other }
     }
 }
 

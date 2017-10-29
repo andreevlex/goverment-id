@@ -1,5 +1,5 @@
-
-pub use common::{only_digits, ValidResult, Validate};
+use common::{only_digits, Validate};
+use error::Error;
 
 pub struct Inn {
     value: String,
@@ -9,7 +9,7 @@ pub struct Inn {
 impl Inn {
     pub fn new(input: &str) -> Inn {
         Inn {
-            value: input.to_string(),
+            value: input.into(),
             ratio: [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8],
         }
     }
@@ -51,21 +51,21 @@ fn get_digit(input: &str, n: usize) -> u32 {
 }
 
 impl Validate for Inn {
-    fn is_valid(&self) -> ValidResult {
+    fn is_valid(&self) -> super::ValidResult {
         if self.value.is_empty() {
-            return Err("ИНН пуст".to_string());
+            return Err(Error::Empty);
         }
 
         if !only_digits(&self.value) {
-            return Err(
-                "ИНН должен состоять только из цифр".to_string(),
-            );
+            return Err(Error::ExpectedNumbersOnly);
         }
 
         match self.value.len() {
             12 => Ok(self.check_len12()),
             10 => Ok(self.check_len10()),
-            _ => Err("ИНН должен быть длиной 10 или 12 цифр".to_string()),
+            1...9 => Err(Error::WrongLength { length: 10 }),
+            11 => Err(Error::WrongLength { length: 12 }),
+            _ => Err(Error::WrongLength { length: 12 }),
         }
     }
 }
