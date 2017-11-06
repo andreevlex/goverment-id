@@ -60,6 +60,7 @@ fn call(method: rpser::Method) -> Result<rpser::Response> {
 #[derive(Debug)]
 pub enum Error {
     TooManyRecords,
+    FnsError(String),
     ReqError(reqwest::Error),
     RpcError(rpser::RpcError),
     XmlError(rpser::xml::Error),
@@ -75,6 +76,7 @@ impl fmt::Display for Error {
                 f,
                 "В запросе не может быть больше 10000 элементов"
             ),
+            Error::FnsError(ref err_msg) => write!(f, "{}", err_msg),
             Error::ReqError(ref e) => fmt::Display::fmt(e, f),
             Error::RpcError(ref e) => fmt::Display::fmt(e, f),
             Error::XmlError(ref e) => fmt::Display::fmt(e, f),
@@ -90,7 +92,8 @@ impl error::Error for Error {
         match *self {
             Error::TooManyRecords => {
                 "В запросе не может быть больше 10000 элементов"
-            }
+            },
+            Error::FnsError(_) => "Сервис сообщил об ошибке обработки запроса",
             Error::ReqError(ref e) => e.description(),
             Error::RpcError(ref e) => e.description(),
             Error::XmlError(ref e) => e.description(),
@@ -103,6 +106,7 @@ impl error::Error for Error {
     fn cause(&self) -> Option<&error::Error> {
         match *self {
             Error::TooManyRecords => None,
+            Error::FnsError(_) => None,
             Error::ReqError(ref e) => e.cause(),
             Error::RpcError(ref e) => e.cause(),
             Error::XmlError(ref e) => e.cause(),
