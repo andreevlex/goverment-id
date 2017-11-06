@@ -17,7 +17,7 @@ fn main() {
         Utc::now(),
     ));
 
-    match check_fns(&partners) {
+    match check_fns(partners) {
         Ok(rsp) => println!("{:?}", rsp),
         Err(e) => println!("Error {:?}", e),
     }

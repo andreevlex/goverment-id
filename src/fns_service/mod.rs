@@ -14,7 +14,7 @@ use std::result;
 use std::error;
 use std::fmt;
 
-use self::rpser::xml::BuildElement;
+use self::rpser::xml::{BuildElement};
 use self::rpser::Method;
 
 use xmltree::Element;
@@ -27,7 +27,7 @@ pub use self::transforms::FromElement;
 const V2_API_RPC_PATH: &'static str = "http://npchk.nalog.ru:80/FNSNDSCAWS_2";
 const V2_API_REQUEST: &'static str = "http://ws.unisoft/FNSNDSCAWS2/Request";
 
-pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
+pub fn check_fns(partners: Vec<Partner>) -> Result<NdsResponse> {
     let namespace = "req";
 
     if partners.len() > 10_000 {
@@ -35,11 +35,11 @@ pub fn check_fns(partners: &Vec<Partner>) -> Result<NdsResponse> {
     }
 
     let mut nds_request2 = Method::new("NdsRequest2");
-    for elem in partners.iter() {
+    for elem in partners {
         nds_request2 = nds_request2.with(
             Element::node(format!("{}:{}", namespace, "NP"))
-                .with_attr("INN", elem.inn.clone())
-                .with_attr("KPP", elem.kpp.clone())
+                .with_attr("INN", elem.inn)
+                .with_attr("KPP", elem.kpp)
                 .with_attr("DT", elem.dt.format("%d.%m.%Y").to_string()),
         );
     }
