@@ -1,5 +1,5 @@
 use xmltree::Element;
-use super::{NdsResponse, Partner, Result, Error};
+use super::{Error, NdsResponse, Partner, Result};
 use super::rpser::xml::BuildElement;
 
 use chrono::prelude::*;
@@ -17,8 +17,8 @@ fn get_datetime(value: &str) -> ParseResult<DateTime<Utc>> {
     Utc.datetime_from_str(&format!("{} 00:00:00", value), "%d.%m.%Y %H:%M:%S")
 }
 
-impl FromElement for NdsResponse {
-    fn from_element(element: Element) -> Result<NdsResponse> {
+impl<'a> FromElement for NdsResponse<'a> {
+    fn from_element(element: Element) -> Result<NdsResponse<'a>> {
         let err_msg: String = element.get_attr("errMsg");
         if !err_msg.is_empty() {
             return Err(Error::FnsError(err_msg));
@@ -38,11 +38,11 @@ impl FromElement for NdsResponse {
     }
 }
 
-impl FromElement for Partner {
-    fn from_element(element: Element) -> Result<Partner> {
+impl<'a> FromElement for Partner<'a> {
+    fn from_element(element: Element) -> Result<Partner<'a>> {
         Ok(Partner {
-            inn: element.get_attr("INN"),
-            kpp: element.get_attr("KPP"),
+            inn: element.get_attr("INN").into(),
+            kpp: element.get_attr("KPP").into(),
             dt: get_datetime(&element.get_attr("DT"))?,
             state: i32::from_str(&element.get_attr("State"))?,
         })

@@ -14,7 +14,7 @@ use std::result;
 use std::error;
 use std::fmt;
 
-use self::rpser::xml::{BuildElement};
+use self::rpser::xml::BuildElement;
 use self::rpser::Method;
 
 use xmltree::Element;
@@ -92,8 +92,10 @@ impl error::Error for Error {
         match *self {
             Error::TooManyRecords => {
                 "В запросе не может быть больше 10000 элементов"
-            },
-            Error::FnsError(_) => "Сервис сообщил об ошибке обработки запроса",
+            }
+            Error::FnsError(_) => {
+                "Сервис сообщил об ошибке обработки запроса"
+            }
             Error::ReqError(ref e) => e.description(),
             Error::RpcError(ref e) => e.description(),
             Error::XmlError(ref e) => e.description(),

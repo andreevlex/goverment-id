@@ -1,18 +1,22 @@
 use chrono::prelude::*;
+use std::borrow::Cow;
 
 #[derive(Debug)]
-pub struct Partner {
-    pub inn: String,
-    pub kpp: String,
+pub struct Partner<'a> {
+    pub inn: Cow<'a, str>,
+    pub kpp: Cow<'a, str>,
     pub dt: DateTime<Utc>,
     pub state: i32,
 }
 
-impl Partner {
-    pub fn new(inn: String, kpp: String, dt: DateTime<Utc>) -> Partner {
+impl<'a> Partner<'a> {
+    pub fn new<S>(inn: S, kpp: S, dt: DateTime<Utc>) -> Partner<'a>
+    where
+        S: Into<Cow<'a, str>>,
+    {
         Partner {
-            inn: inn,
-            kpp: kpp,
+            inn: inn.into(),
+            kpp: kpp.into(),
             dt: dt,
             state: 0,
         }
