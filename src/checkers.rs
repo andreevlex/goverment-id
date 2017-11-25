@@ -14,19 +14,19 @@ pub struct Inn {
     ratio: [u32; 11],
 }
 
-pub struct AbstructChecker;
+pub struct AbstractChecker;
 
-impl Checker<AbstructChecker> {
+impl Checker<AbstractChecker> {
     pub fn new(input: &str) -> Self {
         Checker {
             value: input.into(),
-            concrete_checker: AbstructChecker,
+            concrete_checker: AbstractChecker,
         }
     }
 }
 
-impl From<Checker<AbstructChecker>> for Checker<Inn> {
-    fn from(other: Checker<AbstructChecker>) -> Checker<Inn> {
+impl From<Checker<AbstractChecker>> for Checker<Inn> {
+    fn from(other: Checker<AbstractChecker>) -> Checker<Inn> {
         let checker = Inn {
             ratio: [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8],
         };
@@ -97,8 +97,8 @@ impl Validate for Checker<Inn> {
 
 pub struct Kpp;
 
-impl From<Checker<AbstructChecker>> for Checker<Kpp> {
-    fn from(other: Checker<AbstructChecker>) -> Checker<Kpp> {
+impl From<Checker<AbstractChecker>> for Checker<Kpp> {
+    fn from(other: Checker<AbstractChecker>) -> Checker<Kpp> {
         Checker {
             value: other.value.into(),
             concrete_checker: Kpp,
@@ -125,8 +125,8 @@ impl Validate for Checker<Kpp> {
 
 pub struct Bik;
 
-impl From<Checker<AbstructChecker>> for Checker<Bik> {
-    fn from(other: Checker<AbstructChecker>) -> Checker<Bik> {
+impl From<Checker<AbstractChecker>> for Checker<Bik> {
+    fn from(other: Checker<AbstractChecker>) -> Checker<Bik> {
         Checker {
             value: other.value.into(),
             concrete_checker: Bik,
