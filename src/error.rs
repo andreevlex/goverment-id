@@ -26,7 +26,7 @@ impl fmt::Display for Error {
             ),
             Error::InvalidCharacters { ref valid } => write!(
                 f,
-                "Значение должно состоять из следующих симловов '{}'",
+                "Значение должно состоять из следующих символов '{}'",
                 valid
             ),
             Error::RegexError(ref e) => fmt::Display::fmt(e, f),

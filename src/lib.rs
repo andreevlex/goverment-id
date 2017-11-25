@@ -8,10 +8,7 @@ extern crate reqwest;
 extern crate xml;
 extern crate xmltree;
 
-pub mod inn;
-pub mod kpp;
-pub mod bik;
-pub mod common;
+pub mod checkers;
 pub mod error;
 pub mod fns_service;
 #[cfg(test)]

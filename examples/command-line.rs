@@ -1,7 +1,6 @@
 extern crate goverment_id;
 
-use goverment_id::{bik, inn, kpp};
-use goverment_id::common::Validate;
+use goverment_id::checkers::*;
 
 fn print_result(res: bool) {
     if res {
@@ -12,7 +11,7 @@ fn print_result(res: bool) {
 }
 
 fn check_inn(s: &str) {
-    let value = inn::Inn::new(s);
+    let value: Checker<Inn> = Checker::new(s).into();
     match value.is_valid() {
         Ok(res) => print_result(res),
         Err(msg) => println!("Error: {}", msg),
@@ -20,7 +19,7 @@ fn check_inn(s: &str) {
 }
 
 fn check_kpp(s: &str) {
-    let value = kpp::Kpp::new(s);
+    let value: Checker<Kpp> = Checker::new(s).into();
     match value.is_valid() {
         Ok(res) => print_result(res),
         Err(msg) => println!("Error: {}", msg),
@@ -28,7 +27,7 @@ fn check_kpp(s: &str) {
 }
 
 fn check_bik(s: &str) {
-    let value = bik::Bik::new(s);
+    let value: Checker<Bik> = Checker::new(s).into();
     match value.is_valid() {
         Ok(res) => print_result(res),
         Err(msg) => println!("Error: {}", msg),
