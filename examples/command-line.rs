@@ -2,18 +2,10 @@ extern crate goverment_id;
 
 use goverment_id::checkers::*;
 
-fn print_result(res: bool) {
-    if res {
-        println!("{}", "yes");
-    } else {
-        println!("{}", "no");
-    }
-}
-
 fn check_inn(s: &str) {
     let value: Checker<Inn> = Checker::new(s).into();
     match value.is_valid() {
-        Ok(res) => print_result(res),
+        Ok(res) => println!("{}", res),
         Err(msg) => println!("Error: {}", msg),
     }
 }
@@ -21,7 +13,7 @@ fn check_inn(s: &str) {
 fn check_kpp(s: &str) {
     let value: Checker<Kpp> = Checker::new(s).into();
     match value.is_valid() {
-        Ok(res) => print_result(res),
+        Ok(res) => println!("{}", res),
         Err(msg) => println!("Error: {}", msg),
     }
 }
@@ -29,7 +21,7 @@ fn check_kpp(s: &str) {
 fn check_bik(s: &str) {
     let value: Checker<Bik> = Checker::new(s).into();
     match value.is_valid() {
-        Ok(res) => print_result(res),
+        Ok(res) => println!("{}", res),
         Err(msg) => println!("Error: {}", msg),
     }
 }

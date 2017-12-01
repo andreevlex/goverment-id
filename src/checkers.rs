@@ -1,20 +1,25 @@
 use error::Error;
 use regex::Regex;
 
+/// Типаж для проверки значения на соотвествие требованиям
 pub trait Validate {
+    /// Проверить значение
     fn is_valid(&self) -> super::ValidResult;
 }
 
+/// Хранит общие данные для проверки
 pub struct Checker<S> {
     value: String,
     concrete_checker: S,
 }
 
+/// Абстрактная проверка. Ничего не делает
+pub struct AbstractChecker;
+
+/// Проверка `Идентификационного номера налогоплательщика`
 pub struct Inn {
     ratio: [u32; 11],
 }
-
-pub struct AbstractChecker;
 
 impl Checker<AbstractChecker> {
     pub fn new(input: &str) -> Self {
@@ -39,6 +44,7 @@ impl From<Checker<AbstractChecker>> for Checker<Inn> {
 }
 
 impl Checker<Inn> {
+    /// Проверяет `ИНН` индивидуального предпринимателя
     fn check_len12(&self) -> bool {
         let calc_num1 = self.check_digit(&self.concrete_checker.ratio[1..]);
         let calc_num2 = self.check_digit(&self.concrete_checker.ratio[..]);
@@ -46,12 +52,14 @@ impl Checker<Inn> {
         calc_num1 == get_digit(&self.value, 10) && calc_num2 == get_digit(&self.value, 11)
     }
 
+    /// Проверяет `ИНН` юридического лица
     fn check_len10(&self) -> bool {
         let calc_num = self.check_digit(&self.concrete_checker.ratio[2..]);
 
         calc_num == get_digit(&self.value, 9)
     }
 
+    /// Рассчитывает контрольную цифру
     fn check_digit(&self, ratio: &[u32]) -> u32 {
         let mut sum = 0;
 
@@ -63,6 +71,7 @@ impl Checker<Inn> {
     }
 }
 
+/// Получает цифру из строки по индексу
 fn get_digit(input: &str, n: usize) -> u32 {
     let ch: char = match input.chars().nth(n) {
         Some(x) => x,
@@ -95,6 +104,7 @@ impl Validate for Checker<Inn> {
     }
 }
 
+/// Проверка `кода причины постановки на учёт`
 pub struct Kpp;
 
 impl From<Checker<AbstractChecker>> for Checker<Kpp> {
@@ -123,6 +133,7 @@ impl Validate for Checker<Kpp> {
     }
 }
 
+/// Проверка `банковсковского идентификационного кода`
 pub struct Bik;
 
 impl From<Checker<AbstractChecker>> for Checker<Bik> {
@@ -151,6 +162,7 @@ impl Validate for Checker<Bik> {
     }
 }
 
+/// Проверяет, что в строке только цифры
 pub fn only_digits(input: &str) -> bool {
     if input.is_empty() {
         return false;
