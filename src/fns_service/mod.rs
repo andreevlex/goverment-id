@@ -26,10 +26,10 @@ pub use self::transforms::FromElement;
 
 const V2_API_RPC_PATH: &'static str = "http://npchk.nalog.ru:80/FNSNDSCAWS_2";
 const V2_API_REQUEST: &'static str = "http://ws.unisoft/FNSNDSCAWS2/Request";
+const V2_API_NAMESPACE: &'static str = "req";
 
+/// Проверяет контрагентов с помощью сервиса http://npchk.nalog.ru/
 pub fn check_fns(partners: Vec<Partner>) -> Result<NdsResponse> {
-    let namespace = "req";
-
     if partners.len() > 10_000 {
         return Err(Error::TooManyRecords);
     }
@@ -37,7 +37,7 @@ pub fn check_fns(partners: Vec<Partner>) -> Result<NdsResponse> {
     let mut nds_request2 = Method::new("NdsRequest2");
     for elem in partners {
         nds_request2 = nds_request2.with(
-            Element::node(format!("{}:{}", namespace, "NP"))
+            Element::node(format!("{}:{}", V2_API_NAMESPACE, "NP"))
                 .with_attr("INN", elem.inn)
                 .with_attr("KPP", elem.kpp)
                 .with_attr("DT", elem.dt.format("%d.%m.%Y").to_string()),
@@ -49,8 +49,17 @@ pub fn check_fns(partners: Vec<Partner>) -> Result<NdsResponse> {
     Ok(NdsResponse::from_element(response.body)?)
 }
 
+/// Проверяет 1 - го контрагента с помощью сервиса http://npchk.nalog.ru/
+pub fn check_fns_partner(p: Partner) -> Result<NdsResponse> {
+    let mut partners: Vec<Partner> = vec![];
+    partners.push(p);
+
+    check_fns(partners)
+}
+
+/// Вызывает удаленную процедуру через протокол `SOAP`
 fn call(method: rpser::Method) -> Result<rpser::Response> {
-    let envelope = method.as_xml(V2_API_REQUEST);
+    let envelope = method.as_xml(V2_API_REQUEST, V2_API_NAMESPACE);
 
     let http_response = http::soap_action(V2_API_RPC_PATH, &method.name, &envelope)?;
 

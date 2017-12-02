@@ -35,9 +35,7 @@ impl Method {
     }
 
     /// Convert method to full XML envelope.
-    pub fn as_xml(&self, api_url: &str) -> String {
-        let namespace = "req";
-
+    pub fn as_xml(&self, api_url: &str, namespace: &str) -> String {
         let envelope = Element::node("soapenv:Envelope")
             .with_attr("xmlns:soapenv", "http://schemas.xmlsoap.org/soap/envelope/")
             .with_attr(format!("xmlns:{}", namespace), api_url)
