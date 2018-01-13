@@ -3,7 +3,7 @@ name = "goverment_id"
 version = "0.1.0"
 authors = ["Andreev Alexander <andreevlex.as@gmail.com>"]
 
-description = "The checksum values of distinct identifiers of legal entities of the Russian Federation. The services of the Federal tax service for Rust"
+description = "The checksum values of distinct identifiers of legal entities of the Russian Federation for Rust"
 homepage = "https://github.com/andreevlex/goverment-id"
 repository = "https://github.com/andreevlex/goverment-id"
 keywords = ["nalog.ru"]
@@ -12,15 +12,6 @@ license = "MIT"
 
 [dependencies]
 regex = "0.2.2"
-xml-rs = "0.6"
-log = "0.3"
-reqwest = "0.7.3"
-hyper = "0.11.2"
-xmltree = "0.6.1"
-chrono = "0.4.0"
 
 [[example]]
 name = "command-line"
-
-[[example]]
-name = "check-fns"
