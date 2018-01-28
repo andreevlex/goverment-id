@@ -1,12 +1,12 @@
 [package]
-name = "goverment_id"
+name = "government_id"
 version = "0.1.0"
 authors = ["Andreev Alexander <andreevlex.as@gmail.com>"]
 
 description = "The checksum values of distinct identifiers of legal entities of the Russian Federation for Rust"
 homepage = "https://github.com/andreevlex/goverment-id"
 repository = "https://github.com/andreevlex/goverment-id"
-keywords = ["nalog.ru"]
+keywords = ["nalogru", "taxservice"]
 readme = "README.md"
 license = "MIT"
 
@@ -14,4 +14,10 @@ license = "MIT"
 regex = "0.2.2"
 
 [[example]]
-name = "command-line"
+name = "cli-inn"
+
+[[example]]
+name = "cli-kpp"
+
+[[example]]
+name = "cli-bik"
