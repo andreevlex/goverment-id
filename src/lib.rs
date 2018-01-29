@@ -1,12 +1,12 @@
 extern crate regex;
 
 pub mod error;
-pub mod inn;
+pub mod tax_id;
 pub mod kpp;
 pub mod bik;
 
 pub use error::*;
-pub use inn::*;
+pub use tax_id::*;
 pub use kpp::*;
 pub use bik::*;
 

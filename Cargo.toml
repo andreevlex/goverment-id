@@ -14,7 +14,7 @@ license = "MIT"
 regex = "0.2.2"
 
 [[example]]
-name = "cli-inn"
+name = "cli-tax-id"
 
 [[example]]
 name = "cli-kpp"
