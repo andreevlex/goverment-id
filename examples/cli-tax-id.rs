@@ -2,8 +2,8 @@ extern crate government_id;
 
 use government_id::*;
 
-fn check_inn(s: &str) {
-    let value = Inn::new(s);
+fn check_tax_id(s: &str) {
+    let value = TaxpayerIdentificationNumber::new(s);
     match value.is_valid() {
         Ok(res) => println!("{}", res),
         Err(msg) => println!("Error: {}", msg),
@@ -13,7 +13,7 @@ fn check_inn(s: &str) {
 fn main() {
     const HELP: &'static str = "Использование: government_id команда [аргументы]...
     Команды:
-        check inn INN - проверить ИНН. Параметр INN - содержит Идентификационный номер налогоплательщика (ИНН)
+        check tax_id TAX_ID - проверить ИНН. Параметр INN - содержит Идентификационный номер налогоплательщика (ИНН)
         help  - показать это сообщение.";
 
     let args: Vec<String> = std::env::args().collect();
@@ -21,11 +21,11 @@ fn main() {
         Some(text) => match text.as_ref() {
             "check" => match args.get(2) {
                 Some(flag) => match flag.as_ref() {
-                    "inn" => {
+                    "tax_id" => {
                         if args.len() != 4 {
-                            panic!("Использование: government_id check inn INN");
+                            panic!("Использование: government_id check tax_id TAX_ID");
                         }
-                        check_inn(&args[3])
+                        check_tax_id(&args[3])
                     }                    
                     param @ _ => panic!(format!(
                         "Неправильный параметр команды check: {}",

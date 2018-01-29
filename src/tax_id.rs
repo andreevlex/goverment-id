@@ -2,30 +2,30 @@ use super::{ValidResult, Validate};
 use error::Error;
 
 /// Проверка `Идентификационного номера налогоплательщика`
-pub struct Inn {
+pub struct TaxpayerIdentificationNumber {
     value: String,
 }
 
-impl Inn {
+impl TaxpayerIdentificationNumber {
     const RATIO: [u32; 11] = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
 
     pub fn new(input: &str) -> Self {
-        Inn {
+        TaxpayerIdentificationNumber {
             value: input.into(),
         }
     }
 
     /// Проверяет `ИНН` индивидуального предпринимателя
     fn check_len12(&self) -> bool {
-        let calc_num1 = self.check_digit(&Inn::RATIO[1..]);
-        let calc_num2 = self.check_digit(&Inn::RATIO[..]);
+        let calc_num1 = self.check_digit(&TaxpayerIdentificationNumber::RATIO[1..]);
+        let calc_num2 = self.check_digit(&TaxpayerIdentificationNumber::RATIO[..]);
 
         calc_num1 == get_digit(&self.value, 10) && calc_num2 == get_digit(&self.value, 11)
     }
 
     /// Проверяет `ИНН` юридического лица
     fn check_len10(&self) -> bool {
-        let calc_num = self.check_digit(&Inn::RATIO[2..]);
+        let calc_num = self.check_digit(&TaxpayerIdentificationNumber::RATIO[2..]);
 
         calc_num == get_digit(&self.value, 9)
     }
@@ -53,7 +53,7 @@ fn get_digit(input: &str, n: usize) -> u32 {
     }
 }
 
-impl Validate for Inn {
+impl Validate for TaxpayerIdentificationNumber {
     fn is_valid(&self) -> ValidResult {
         if self.value.is_empty() {
             return Err(Error::Empty);
@@ -78,93 +78,93 @@ mod tests {
     use error;
     use super::*;
 
-    fn create_inn(s: &str) -> Inn {
-        Inn::new(s)
+    fn create_TaxpayerIdentificationNumber(s: &str) -> TaxpayerIdentificationNumber {
+        TaxpayerIdentificationNumber::new(s)
     }
 
     #[test]
-    fn test_empty_inn() {
-        match create_inn("").is_valid() {
+    fn test_empty_TaxpayerIdentificationNumber() {
+        match create_TaxpayerIdentificationNumber("").is_valid() {
             Err(error::Error::Empty) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_inn_9_zeros() {
-        match create_inn("000000000").is_valid() {
+    fn test_invalid_TaxpayerIdentificationNumber_9_zeros() {
+        match create_TaxpayerIdentificationNumber("000000000").is_valid() {
             Err(error::Error::WrongLength { length: _ }) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_inn_10zeros() {
-        match create_inn("0000000000").is_valid() {
+    fn test_valid_TaxpayerIdentificationNumber_10zeros() {
+        match create_TaxpayerIdentificationNumber("0000000000").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_inn_11zeros() {
-        match create_inn("00000000000").is_valid() {
+    fn test_invalid_TaxpayerIdentificationNumber_11zeros() {
+        match create_TaxpayerIdentificationNumber("00000000000").is_valid() {
             Err(error::Error::WrongLength { length: _ }) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_inn_12zeros() {
-        match create_inn("000000000000").is_valid() {
+    fn test_valid_TaxpayerIdentificationNumber_12zeros() {
+        match create_TaxpayerIdentificationNumber("000000000000").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_inn_too_short() {
-        match create_inn("772053").is_valid() {
+    fn test_invalid_TaxpayerIdentificationNumber_too_short() {
+        match create_TaxpayerIdentificationNumber("772053").is_valid() {
             Err(error::Error::WrongLength { length: _ }) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_inn_10_numbers() {
-        match create_inn("7827004526").is_valid() {
+    fn test_valid_TaxpayerIdentificationNumber_10_numbers() {
+        match create_TaxpayerIdentificationNumber("7827004526").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_check_digit_inn_10_numbers() {
-        match create_inn("7827004527").is_valid() {
+    fn test_invalid_check_digit_TaxpayerIdentificationNumber_10_numbers() {
+        match create_TaxpayerIdentificationNumber("7827004527").is_valid() {
             Ok(false) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_inn_12_numbers() {
-        match create_inn("760307073214").is_valid() {
+    fn test_valid_TaxpayerIdentificationNumber_12_numbers() {
+        match create_TaxpayerIdentificationNumber("760307073214").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_check_digit_inn_12_numbers() {
-        match create_inn("760307073217").is_valid() {
+    fn test_invalid_check_digit_TaxpayerIdentificationNumber_12_numbers() {
+        match create_TaxpayerIdentificationNumber("760307073217").is_valid() {
             Ok(false) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_inn_with_litters() {
-        match create_inn("782f004526").is_valid() {
+    fn test_invalid_TaxpayerIdentificationNumber_with_litters() {
+        match create_TaxpayerIdentificationNumber("782f004526").is_valid() {
             Err(error::Error::ExpectedNumbersOnly) => assert!(true),
             _ => assert!(false),
         };
