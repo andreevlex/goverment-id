@@ -26,7 +26,7 @@ fn main() {
                             panic!("Использование: government_id check tax_id TAX_ID");
                         }
                         check_tax_id(&args[3])
-                    }                    
+                    }
                     param @ _ => panic!(format!(
                         "Неправильный параметр команды check: {}",
                         param

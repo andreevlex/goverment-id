@@ -78,93 +78,93 @@ mod tests {
     use error;
     use super::*;
 
-    fn create_TaxpayerIdentificationNumber(s: &str) -> TaxpayerIdentificationNumber {
+    fn create_taxpayer_identification_number(s: &str) -> TaxpayerIdentificationNumber {
         TaxpayerIdentificationNumber::new(s)
     }
 
     #[test]
-    fn test_empty_TaxpayerIdentificationNumber() {
-        match create_TaxpayerIdentificationNumber("").is_valid() {
+    fn test_empty_taxpayer_identification_number() {
+        match create_taxpayer_identification_number("").is_valid() {
             Err(error::Error::Empty) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_TaxpayerIdentificationNumber_9_zeros() {
-        match create_TaxpayerIdentificationNumber("000000000").is_valid() {
+    fn test_invalid_taxpayer_identification_number_9_zeros() {
+        match create_taxpayer_identification_number("000000000").is_valid() {
             Err(error::Error::WrongLength { length: _ }) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_TaxpayerIdentificationNumber_10zeros() {
-        match create_TaxpayerIdentificationNumber("0000000000").is_valid() {
+    fn test_valid_taxpayer_identification_number_10zeros() {
+        match create_taxpayer_identification_number("0000000000").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_TaxpayerIdentificationNumber_11zeros() {
-        match create_TaxpayerIdentificationNumber("00000000000").is_valid() {
+    fn test_invalid_taxpayer_identification_number_11zeros() {
+        match create_taxpayer_identification_number("00000000000").is_valid() {
             Err(error::Error::WrongLength { length: _ }) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_TaxpayerIdentificationNumber_12zeros() {
-        match create_TaxpayerIdentificationNumber("000000000000").is_valid() {
+    fn test_valid_taxpayer_identification_number_12zeros() {
+        match create_taxpayer_identification_number("000000000000").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_TaxpayerIdentificationNumber_too_short() {
-        match create_TaxpayerIdentificationNumber("772053").is_valid() {
+    fn test_invalid_taxpayer_identification_number_too_short() {
+        match create_taxpayer_identification_number("772053").is_valid() {
             Err(error::Error::WrongLength { length: _ }) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_TaxpayerIdentificationNumber_10_numbers() {
-        match create_TaxpayerIdentificationNumber("7827004526").is_valid() {
+    fn test_valid_taxpayer_identification_number_10_numbers() {
+        match create_taxpayer_identification_number("7827004526").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_check_digit_TaxpayerIdentificationNumber_10_numbers() {
-        match create_TaxpayerIdentificationNumber("7827004527").is_valid() {
+    fn test_invalid_check_digit_taxpayer_identification_number_10_numbers() {
+        match create_taxpayer_identification_number("7827004527").is_valid() {
             Ok(false) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_valid_TaxpayerIdentificationNumber_12_numbers() {
-        match create_TaxpayerIdentificationNumber("760307073214").is_valid() {
+    fn test_valid_taxpayer_identification_number_12_numbers() {
+        match create_taxpayer_identification_number("760307073214").is_valid() {
             Ok(true) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_check_digit_TaxpayerIdentificationNumber_12_numbers() {
-        match create_TaxpayerIdentificationNumber("760307073217").is_valid() {
+    fn test_invalid_check_digit_taxpayer_identification_number_12_numbers() {
+        match create_taxpayer_identification_number("760307073217").is_valid() {
             Ok(false) => assert!(true),
             _ => assert!(false),
         };
     }
 
     #[test]
-    fn test_invalid_TaxpayerIdentificationNumber_with_litters() {
-        match create_TaxpayerIdentificationNumber("782f004526").is_valid() {
+    fn test_invalid_taxpayer_identification_number_with_litters() {
+        match create_taxpayer_identification_number("782f004526").is_valid() {
             Err(error::Error::ExpectedNumbersOnly) => assert!(true),
             _ => assert!(false),
         };

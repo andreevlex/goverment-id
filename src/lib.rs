@@ -2,12 +2,12 @@ extern crate regex;
 
 pub mod error;
 pub mod tax_id;
-pub mod kpp;
+pub mod reason_code;
 pub mod bik;
 
 pub use error::*;
 pub use tax_id::*;
-pub use kpp::*;
+pub use reason_code::*;
 pub use bik::*;
 
 pub type ValidResult = std::result::Result<bool, error::Error>;

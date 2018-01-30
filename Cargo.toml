@@ -17,7 +17,7 @@ regex = "0.2.2"
 name = "cli-tax-id"
 
 [[example]]
-name = "cli-kpp"
+name = "cli-rrc"
 
 [[example]]
 name = "cli-bik"
