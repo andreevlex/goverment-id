@@ -32,6 +32,12 @@ impl Validate for ReasonRegistrationCode {
     }
 }
 
+impl From<String> for ReasonRegistrationCode {
+    fn from(other: String) -> ReasonRegistrationCode {
+        ReasonRegistrationCode { value: other }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use error;
@@ -87,6 +93,15 @@ mod tests {
             Ok(false) => assert!(true),
             _ => assert!(false),
         };
+    }
+
+    #[test]
+    fn test_convert_from_string() {
+        let rrc: ReasonRegistrationCode = "0000AZ000".to_owned().into();
+        assert!(match rrc.is_valid() {
+            Ok(true) => true,
+            _ => false,
+        })
     }
 
 }

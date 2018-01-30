@@ -73,6 +73,12 @@ impl Validate for TaxpayerIdentificationNumber {
     }
 }
 
+impl From<String> for TaxpayerIdentificationNumber {
+    fn from(other: String) -> TaxpayerIdentificationNumber {
+        TaxpayerIdentificationNumber { value: other }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use error;
@@ -170,4 +176,12 @@ mod tests {
         };
     }
 
+    #[test]
+    fn test_convert_from_string() {
+        let tin: TaxpayerIdentificationNumber = "7827004526".to_owned().into();
+        assert!(match tin.is_valid() {
+            Ok(true) => true,
+            _ => false,
+        })
+    }
 }

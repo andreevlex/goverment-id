@@ -31,6 +31,12 @@ impl Validate for BankIdentificationCode {
     }
 }
 
+impl From<String> for BankIdentificationCode {
+    fn from(other: String) -> BankIdentificationCode {
+        BankIdentificationCode { value: other }
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use error;
@@ -78,6 +84,15 @@ mod tests {
             Err(error::Error::ExpectedNumbersOnly) => assert!(true),
             _ => assert!(false),
         };
+    }
+
+    #[test]
+    fn test_convert_from_string() {
+        let bic: BankIdentificationCode = "000000000".to_owned().into();
+        assert!(match bic.is_valid() {
+            Ok(true) => true,
+            _ => false,
+        })
     }
 
 }
