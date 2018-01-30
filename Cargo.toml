@@ -20,4 +20,4 @@ name = "cli-tax-id"
 name = "cli-rrc"
 
 [[example]]
-name = "cli-bik"
+name = "cli-bic"

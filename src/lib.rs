@@ -3,12 +3,12 @@ extern crate regex;
 pub mod error;
 pub mod tax_id;
 pub mod reason_code;
-pub mod bik;
+pub mod bic;
 
 pub use error::*;
 pub use tax_id::*;
 pub use reason_code::*;
-pub use bik::*;
+pub use bic::*;
 
 pub type ValidResult = std::result::Result<bool, error::Error>;
 

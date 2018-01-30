@@ -2,8 +2,8 @@ extern crate government_id;
 
 use government_id::*;
 
-fn check_bik(s: &str) {
-    let value = Bik::new(s);
+fn check_bic(s: &str) {
+    let value = BankIdentificationCode::new(s);
     match value.is_valid() {
         Ok(res) => println!("{}", res),
         Err(msg) => println!("Error: {}", msg),
@@ -13,7 +13,7 @@ fn check_bik(s: &str) {
 fn main() {
     const HELP: &'static str = "Использование: government_id команда [аргументы]...
     Команды:
-        check bik BIK - проверить КПП. Параметр BIK - содержит Банковский идентификационный код (БИК)
+        check bic BIC - проверить КПП. Параметр BIC - содержит Банковский идентификационный код (БИК)
         help  - показать это сообщение.";
 
     let args: Vec<String> = std::env::args().collect();
@@ -21,11 +21,11 @@ fn main() {
         Some(text) => match text.as_ref() {
             "check" => match args.get(2) {
                 Some(flag) => match flag.as_ref() {
-                    "bik" => {
+                    "bic" => {
                         if args.len() != 4 {
-                            panic!("Использование: government_id check bik BIK");
+                            panic!("Использование: government_id check bic BIC");
                         }
-                        check_bik(&args[3])
+                        check_bic(&args[3])
                     }
                     param @ _ => panic!(format!(
                         "Неправильный параметр команды check: {}",
