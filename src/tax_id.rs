@@ -1,21 +1,23 @@
 use super::{ValidResult, Validate};
 use error::Error;
 
-/// Проверка `Идентификационного номера налогоплательщика`
+/// This structure describes taxpayer identification number
+/// and allows to obtain information about its properties.
+/// To check whether it is correct.
 pub struct TaxpayerIdentificationNumber {
     value: String,
 }
 
 impl TaxpayerIdentificationNumber {
     const RATIO: [u32; 11] = [3, 7, 2, 4, 10, 3, 5, 9, 4, 6, 8];
-
+    /// Creates a new `TaxpayerIdentificationNumber`
     pub fn new(input: &str) -> Self {
         TaxpayerIdentificationNumber {
             value: input.into(),
         }
     }
 
-    /// Проверяет `ИНН` индивидуального предпринимателя
+    /// Verifies the tax ID of the individual entrepreneur.
     fn check_len12(&self) -> bool {
         let calc_num1 = self.check_digit(&TaxpayerIdentificationNumber::RATIO[1..]);
         let calc_num2 = self.check_digit(&TaxpayerIdentificationNumber::RATIO[..]);
@@ -23,14 +25,14 @@ impl TaxpayerIdentificationNumber {
         calc_num1 == get_digit(&self.value, 10) && calc_num2 == get_digit(&self.value, 11)
     }
 
-    /// Проверяет `ИНН` юридического лица
+    /// Verifies the identity of the taxpayer legal entity.
     fn check_len10(&self) -> bool {
         let calc_num = self.check_digit(&TaxpayerIdentificationNumber::RATIO[2..]);
 
         calc_num == get_digit(&self.value, 9)
     }
 
-    /// Рассчитывает контрольную цифру
+    /// Calculates check digit.
     fn check_digit(&self, r: &[u32]) -> u32 {
         let mut sum = 0;
 
@@ -42,7 +44,7 @@ impl TaxpayerIdentificationNumber {
     }
 }
 
-/// Получает цифру из строки по индексу
+/// Gets number from string by index.
 fn get_digit(input: &str, n: usize) -> u32 {
     match input.chars().nth(n) {
         Some(ch) => match ch.to_digit(10) {

@@ -2,12 +2,15 @@ use super::{ValidResult, Validate};
 use error::Error;
 use regex::Regex;
 
-/// Проверка `кода причины постановки на учёт`
+/// This structure describes a reason code of registration
+/// and allows to obtain information about its properties.
+/// To check whether it is correct.
 pub struct ReasonRegistrationCode {
     value: String,
 }
 
 impl ReasonRegistrationCode {
+    /// Creates a new `ReasonRegistrationCode`
     pub fn new(input: &str) -> Self {
         ReasonRegistrationCode {
             value: input.into(),

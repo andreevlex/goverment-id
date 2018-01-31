@@ -1,12 +1,15 @@
 use super::{ValidResult, Validate};
 use error::Error;
 
-/// Проверка `банковского идентификационного кода`
+/// This structure describes a Bank identification code
+/// and enables you to return information about its properties.
+/// To check whether it is correct.
 pub struct BankIdentificationCode {
     value: String,
 }
 
 impl BankIdentificationCode {
+    /// Creates a new `BankIdentificationCode`
     pub fn new(input: &str) -> Self {
         BankIdentificationCode {
             value: input.into(),
