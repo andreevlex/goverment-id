@@ -1,4 +1,4 @@
-//! Пример использования проверки кода причины постановки на учет
+//! Example usage check the reason code of registration
 extern crate government_id;
 
 use government_id::*;
@@ -12,36 +12,25 @@ fn check_reason_registration_code(s: &str) {
 }
 
 fn main() {
-    const HELP: &'static str = "Использование: government_id команда [аргументы]...
-    Команды:
-        check reason_code RRC - проверить КПП. Параметр KPP - содержит Код причины постановки на учет (КПП)
-        help  - показать это сообщение.";
+    const HELP: &'static str = "Usage: government_id command [arguments]...
+    Commands:
+        check RRC Parameter RRC - contains the reason Code of registration
+        help  - show this message.";
 
     let args: Vec<String> = std::env::args().collect();
     match args.get(1) {
         Some(text) => match text.as_ref() {
-            "check" => match args.get(2) {
-                Some(flag) => {
-                    match flag.as_ref() {
-                        "reason_code" => {
-                            if args.len() != 4 {
-                                panic!("Использование: government_id check reason_code RRC");
-                            }
-                            check_reason_registration_code(&args[3])
-                        }
-                        param @ _ => panic!(format!(
-                            "Неправильный параметр команды check: {}",
-                            param
-                        )),
-                    }
+            "check" => {
+                if args.len() != 3 {
+                    panic!("Usage: government_id check RRC");
                 }
-                None => panic!("Отсутствует обязательный параметр"),
+                check_reason_registration_code(&args[2])
             },
             "help" => {
                 println!("{}", HELP);
             }
             command @ _ => panic!(format!(
-                "Неправильная команда: {}",
+                "Wrong command: {}",
                 command
             )),
         },
