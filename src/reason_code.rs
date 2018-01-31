@@ -5,6 +5,17 @@ use regex::Regex;
 /// This structure describes a reason code of registration
 /// and allows to obtain information about its properties.
 /// To check whether it is correct.
+/// ///
+/// # Examples
+///
+/// ```rust
+///
+/// use government_id::*;
+/// let rrc: ReasonRegistrationCode = "0000AZ000".to_owned().into();
+/// assert!(rrc.is_valid().unwrap());
+///
+/// ```
+///
 pub struct ReasonRegistrationCode {
     value: String,
 }
@@ -60,10 +71,11 @@ mod tests {
 
     #[test]
     fn test_valid_reason_registration_code_9_zeros() {
-        match create_reason_registration_code("000000000").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_reason_registration_code("000000000")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]
@@ -76,26 +88,29 @@ mod tests {
 
     #[test]
     fn test_valid_reason_registration_code_with_upper_case_litters() {
-        match create_reason_registration_code("0000AZ000").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_reason_registration_code("0000AZ000")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]
     fn test_invalid_reason_registration_code_with_lower_case_litters() {
-        match create_reason_registration_code("0000Az000").is_valid() {
-            Ok(false) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_reason_registration_code("0000Az000")
+                .is_valid()
+                .unwrap() == false
+        );
     }
 
     #[test]
     fn test_invalid_reason_registration_code_with_not_alphabet_chars() {
-        match create_reason_registration_code("0000A-000").is_valid() {
-            Ok(false) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_reason_registration_code("0000A-000")
+                .is_valid()
+                .unwrap() == false
+        );
     }
 
     #[test]

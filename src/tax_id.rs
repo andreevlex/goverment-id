@@ -4,6 +4,17 @@ use error::Error;
 /// This structure describes taxpayer identification number
 /// and allows to obtain information about its properties.
 /// To check whether it is correct.
+///
+/// # Examples
+///
+/// ```rust
+///
+/// use government_id::*;
+/// let tin: TaxpayerIdentificationNumber = "7827004526".to_owned().into();
+/// assert!(tin.is_valid().unwrap());
+///
+/// ```
+///
 pub struct TaxpayerIdentificationNumber {
     value: String,
 }
@@ -92,10 +103,10 @@ mod tests {
 
     #[test]
     fn test_empty_taxpayer_identification_number() {
-        match create_taxpayer_identification_number("").is_valid() {
-            Err(error::Error::Empty) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(match create_taxpayer_identification_number("").is_valid() {
+            Err(error::Error::Empty) => true,
+            _ => false,
+        });
     }
 
     #[test]
@@ -108,10 +119,11 @@ mod tests {
 
     #[test]
     fn test_valid_taxpayer_identification_number_10zeros() {
-        match create_taxpayer_identification_number("0000000000").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_taxpayer_identification_number("0000000000")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]
@@ -124,10 +136,11 @@ mod tests {
 
     #[test]
     fn test_valid_taxpayer_identification_number_12zeros() {
-        match create_taxpayer_identification_number("000000000000").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_taxpayer_identification_number("000000000000")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]
@@ -140,34 +153,38 @@ mod tests {
 
     #[test]
     fn test_valid_taxpayer_identification_number_10_numbers() {
-        match create_taxpayer_identification_number("7827004526").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_taxpayer_identification_number("7827004526")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]
     fn test_invalid_check_digit_taxpayer_identification_number_10_numbers() {
-        match create_taxpayer_identification_number("7827004527").is_valid() {
-            Ok(false) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_taxpayer_identification_number("7827004527")
+                .is_valid()
+                .unwrap() == false
+        );
     }
 
     #[test]
     fn test_valid_taxpayer_identification_number_12_numbers() {
-        match create_taxpayer_identification_number("760307073214").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_taxpayer_identification_number("760307073214")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]
     fn test_invalid_check_digit_taxpayer_identification_number_12_numbers() {
-        match create_taxpayer_identification_number("760307073217").is_valid() {
-            Ok(false) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_taxpayer_identification_number("760307073217")
+                .is_valid()
+                .unwrap() == false
+        );
     }
 
     #[test]

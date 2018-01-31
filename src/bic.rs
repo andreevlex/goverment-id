@@ -4,6 +4,17 @@ use error::Error;
 /// This structure describes a Bank identification code
 /// and enables you to return information about its properties.
 /// To check whether it is correct.
+///
+/// # Examples
+///
+/// ```rust
+///
+/// use government_id::*;
+/// let bic: BankIdentificationCode = "000000000".to_owned().into();
+/// assert!(bic.is_valid().unwrap());
+///
+/// ```
+///
 pub struct BankIdentificationCode {
     value: String,
 }
@@ -67,10 +78,11 @@ mod tests {
 
     #[test]
     fn test_valid_bank_identification_code_9_zeros() {
-        match create_bank_identification_code("000000000").is_valid() {
-            Ok(true) => assert!(true),
-            _ => assert!(false),
-        };
+        assert!(
+            create_bank_identification_code("000000000")
+                .is_valid()
+                .unwrap()
+        );
     }
 
     #[test]

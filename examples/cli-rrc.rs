@@ -25,14 +25,11 @@ fn main() {
                     panic!("Usage: government_id check RRC");
                 }
                 check_reason_registration_code(&args[2])
-            },
+            }
             "help" => {
                 println!("{}", HELP);
             }
-            command @ _ => panic!(format!(
-                "Wrong command: {}",
-                command
-            )),
+            command @ _ => panic!(format!("Wrong command: {}", command)),
         },
         None => println!("{}", HELP),
     }

@@ -26,14 +26,11 @@ fn main() {
                     panic!("Usage: government_id check TAX_ID");
                 }
                 check_tax_id(&args[2])
-            },
+            }
             "help" => {
                 println!("{}", HELP);
             }
-            command @ _ => panic!(format!(
-                "Wrong command: {}",
-                command
-            )),
+            command @ _ => panic!(format!("Wrong command: {}", command)),
         },
         None => println!("{}", HELP),
     }
